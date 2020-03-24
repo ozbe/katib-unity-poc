@@ -1,0 +1,60 @@
+apiVersion: v1
+data:
+  defaultTrialTemplate.yaml: |-
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: {{.Trial}}
+      namespace: {{.NameSpace}}
+    spec:
+      template:
+        spec:
+          containers:
+          - name: {{.Trial}}
+            image: docker.io/kubeflowkatib/mxnet-mnist
+            command:
+            - "python3"
+            - "/opt/mxnet-mnist/mnist.py"
+            - "--batch-size=64"
+            {{- with .HyperParameters}}
+            {{- range .}}
+            - "{{.Name}}={{.Value}}"
+            {{- end}}
+            {{- end}}
+          restartPolicy: Never
+  hpTemplate.yaml: |-
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: {{.Trial}}
+      namespace: {{.NameSpace}}
+    spec:
+      template:
+        spec:
+          containers:
+          - name: {{.Trial}}
+            image: docker.io/ozbe/hp:0.0.6
+            command:
+            - "xvfb-run"
+            - "--auto-servernum"
+            - "--server-args='-screen 0 640x480x24'"
+            - "/HP.x86_64"
+            env:
+            {{- with .HyperParameters}}
+            {{- range .}}
+            - name: "{{.Name}}"
+              value: "{{.Value}}"
+            {{- end}}
+            {{- end}}
+          restartPolicy: Never
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: katib
+    app.kubernetes.io/instance: katib-controller-0.8.0
+    app.kubernetes.io/managed-by: kfctl
+    app.kubernetes.io/name: katib-controller
+    app.kubernetes.io/part-of: kubeflow
+    app.kubernetes.io/version: 0.8.0
+  name: trial-template
+  namespace: kubeflow

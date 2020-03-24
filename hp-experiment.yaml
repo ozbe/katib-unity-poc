@@ -1,0 +1,71 @@
+apiVersion: kubeflow.org/v1alpha3
+kind: Experiment
+metadata:
+  name: hp-grid
+  namespace: kubeflow-user
+spec:
+  algorithm:
+    algorithmName: grid
+    algorithmSettings: null
+  maxFailedTrialCount: 3
+  objective:
+    additionalMetricNames:
+    - time
+    goal: 0.99
+    objectiveMetricName: deaths
+    type: maximize
+  parallelTrialCount: 3
+  parameters:
+  - name: weapon0
+    parameterType: categorical
+    feasibleSpace:
+      list:
+      - weapon0.a
+      - weapon0.b
+      - weapon0.c
+      - weapon0.d
+  - name: weapon1
+    parameterType: categorical
+    feasibleSpace:
+      list:
+      - weapon1.a
+      - weapon1.b
+      - weapon1.c
+      - weapon1.d
+  - name: weapon2
+    parameterType: categorical
+    feasibleSpace:
+      list:
+      - weapon2.a
+      - weapon2.b
+      - weapon2.c
+      - weapon2.d
+  - name: weapon3
+    parameterType: categorical
+    feasibleSpace:
+      list:
+      - weapon3.a
+      - weapon3.b
+      - weapon3.c
+      - weapon3.d
+  - name: weapon4
+    parameterType: categorical
+    feasibleSpace:
+      list:
+      - weapon4.a
+      - weapon4.b
+      - weapon4.c
+      - weapon4.d
+  trialTemplate:
+    goTemplate:
+      templateSpec:
+        configMapName: trial-template
+        configMapNamespace: kubeflow
+        templatePath: hpTemplate.yaml
+  metricsCollectorSpec:
+    collector:
+      kind: File
+    source:
+      fileSystemPath:
+        path: "/HP_Data/metrics/output.txt"
+        kind: File

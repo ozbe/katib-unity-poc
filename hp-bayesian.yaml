@@ -1,11 +1,11 @@
 apiVersion: kubeflow.org/v1alpha3
 kind: Experiment
 metadata:
-  name: hp-grid
+  name: hp-bayesian
   namespace: kubeflow-user
 spec:
   algorithm:
-    algorithmName: grid
+    algorithmName: bayesianoptimization
     algorithmSettings: null
   maxFailedTrialCount: 3
   objective:
@@ -14,7 +14,7 @@ spec:
     goal: 0.99
     objectiveMetricName: deaths
     type: maximize
-  parallelTrialCount: 3
+  parallelTrialCount: 1
   parameters:
   - name: weapon0
     parameterType: categorical
@@ -56,6 +56,11 @@ spec:
       - weapon4.b
       - weapon4.c
       - weapon4.d
+  - name: --num-epochs
+    parameterType: int
+    feasibleSpace:
+      min: "20"
+      max: "20"
   trialTemplate:
     goTemplate:
       templateSpec:

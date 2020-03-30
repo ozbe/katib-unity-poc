@@ -112,7 +112,8 @@ We are going to make a Linux Build
 After the Unity Linux Build we have all the assets we need to make a
 Docker image to run on MiniKF.
 
-To start, lets build the Docker image. You can feel free to change
+To start, lets build the Docker image. You can feel free to change the
+tag to one that is more appropriate for your use cases.
 
 ```
 docker build -t hp:0.0.6 .
@@ -190,15 +191,20 @@ kubectl --kubeconfig minikf-kubeconfig apply -f trial-template.yaml -n kubeflow-
 
 Finally, we are to the experiment.
 
-You can see the experiment configured in
-[hp-experiment.yaml](hp-experiment.yaml).
+You can see an experiment configured for grid search in
+[hp-grid.yaml](hp-grid.yaml).
 
-Right now it is configured to use Grid Search.
+There is an experiment yaml file for each algorithm type Katib supports:
+- [hp-grid.yaml](hp-grid.yaml)
+- [hp-random.yaml](hp-random.yaml)
+- [hp-bayesian.yaml](hp-bayesian.yaml)
+- [hp-hyperband.yaml](hp-hyperband.yaml)
+- [hp-tpe.yaml](hp-tpe.yaml)
 
-To create the experiment, run the following
+To create a grid search experiment with the following command
 
 ```
-kubectl --kubeconfig minikf-kubeconfig apply -f hp-experiment.yaml -n kubeflow-user
+kubectl --kubeconfig minikf-kubeconfig apply -f hp-grid.yaml -n kubeflow-user
 ```
 
 ## Katib UI

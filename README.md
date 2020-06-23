@@ -116,7 +116,7 @@ To start, lets build the Docker image. You can feel free to change the
 tag to one that is more appropriate for your use cases.
 
 ```
-docker build -t hp:0.0.6 .
+docker build -t hp:0.0.7 .
 ```
 
 Now lets run the Docker image locally to make sure it is setup
@@ -131,7 +131,7 @@ docker run --rm \
    -e weapon3=weapon3.a \
    -e weapon4=weapon4.a \
    --name hp \
-   hp:0.0.6
+   hp:0.0.7
 ```
 
 You shouldn't see any errors and if you check out
@@ -159,8 +159,8 @@ You can use whatever repo you want to iterate on your own.
 With the repo setup, lets tag and push the build we just made
 
 ```
-docker tag hp:0.0.6 ozbe/hp:0.0.6
-docker push ozbe/hp:0.0.6
+docker tag hp:0.0.7 ozbe/hp:0.0.7
+docker push ozbe/hp:0.0.7
 ```
 
 ## Trial Template
@@ -184,7 +184,7 @@ have any other Trial templates you are attached to, other than
 > **WARNING:** Do not blindly run this command. Read above first!
 
 ```
-kubectl --kubeconfig minikf-kubeconfig apply -f trial-template.yaml -n kubeflow-user
+$ kubectl --kubeconfig minikf-kubeconfig apply -f trial-template.yaml -n kubeflow
 ```
 
 ## Experiment
@@ -225,3 +225,10 @@ Try one of the other algorithms and see how the results differ.
 ### Kubeflow is asking me for username and password
 
 Go to <http://10.10.10.10/> and look at the Credentials square.
+
+### How do I check if the experiment is running?
+
+```
+$ kubectl --kubeconfig minikf-kubeconfig get experiments -n kubeflow-user
+$ kubectl --kubeconfig minikf-kubeconfig get pods -n kubeflow-user
+$ kubectl --kubeconfig minikf-kubeconfig get experiments hp-grid -n kubeflow-user -o yaml

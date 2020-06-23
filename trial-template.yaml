@@ -33,7 +33,7 @@ data:
         spec:
           containers:
           - name: {{.Trial}}
-            image: docker.io/ozbe/hp:0.0.6
+            image: docker.io/ozbe/hp:0.0.7
             command:
             - "xvfb-run"
             - "--auto-servernum"

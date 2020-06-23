@@ -57,6 +57,19 @@ public class HPScript : MonoBehaviour {
     double CalculateDeaths(ICollection<string> weaponValues)
     {
         var hashValue = string.Join("", Enumerable.ToArray(weaponValues));
-        return unchecked((uint)hashValue.GetHashCode()) / (double)uint.MaxValue;
+        return GetHashCode(hashValue) / (double)ulong.MaxValue;
+    }
+
+    // DJB2 https://en.wikipedia.org/wiki/Universal_hashing#Hashing_strings
+    ulong GetHashCode(string hashValue)
+    {
+        ulong hash = 5381;
+
+        foreach (var c in hashValue)
+        {
+            hash = (hash * 33) + c;
+        }
+
+        return hash;
     }
 }
